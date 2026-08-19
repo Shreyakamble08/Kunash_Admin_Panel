@@ -1,0 +1,592 @@
+/* ==========================================================================
+   CAREER.CSS
+   Career Management module (Job Openings + Applicants). Sits alongside the
+   existing navigation.css / dashboard.css / contact.css — reuses the same
+   visual language (glass cards, orange glow, badges, modals, pagination)
+   and leans on Tailwind utilities everywhere Tailwind can do the job.
+   ========================================================================== */
+
+.page {
+  width: min(96%, 1600px);
+  margin: 0 auto;
+  padding: 90px 10px 60px;
+}
+
+.font-display {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+}
+.font-mono {
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* ---- Reveal-on-load, matches the rest of the app ---- */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: reveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes reveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- Custom scrollbar ---- */
+.table-scroll::-webkit-scrollbar,
+.modal-scroll::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+.table-scroll::-webkit-scrollbar-track,
+.modal-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.035);
+  border-radius: 10px;
+}
+.table-scroll::-webkit-scrollbar-thumb,
+.modal-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 106, 44, 0.3);
+  border-radius: 10px;
+}
+.table-scroll::-webkit-scrollbar-thumb:hover,
+.modal-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 106, 44, 0.5);
+}
+
+/* ==========================================================================
+   TABS
+   ========================================================================== */
+.tabs {
+  display: inline-flex;
+  padding: 4px;
+  gap: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.045),
+    rgba(255, 255, 255, 0.015)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.tab-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #948d85;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+.tab-btn svg {
+  width: 15px;
+  height: 15px;
+}
+.tab-btn.is-active {
+  background: linear-gradient(135deg, #ff8a4c, #e6541c);
+  color: #150a04;
+}
+.tab-btn .count {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  opacity: 0.8;
+}
+
+.tab-panel {
+  display: none;
+}
+.tab-panel.is-active {
+  display: block;
+}
+
+/* ==========================================================================
+   UNIFIED CONTROLS ROW
+   Tabs, search, and filters share one row. Both toolbars live in the DOM
+   at all times; only the one matching the active tab is shown. This reads
+   the same `.tab-btn.is-active` class the existing tab-switch logic
+   already toggles, so no JS changes are needed.
+   ========================================================================== */
+/* ==========================================================================
+   UNIFIED CONTROLS ROW - Context sensitive toolbars
+   ========================================================================== */
+.controls-row .tabs {
+  margin-bottom: 0;
+}
+
+.toolbar {
+  display: none;
+}
+
+/* Fallback for browsers that support :has() - JS also forces the correct display */
+.controls-row:has(.tab-btn[data-tab="jobs"].is-active) .toolbar-jobs {
+  display: flex;
+}
+.controls-row:has(.tab-btn[data-tab="applicants"].is-active)
+  .toolbar-applicants {
+  display: flex;
+}
+
+/* ==========================================================================
+   JOB CARDS
+   ========================================================================== */
+.job-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+@media (max-width: 1100px) {
+  .job-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 680px) {
+  .job-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.job-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  padding: 18px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.02)
+  );
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid rgba(255, 106, 44, 0.18);
+  transition:
+    border-color 0.3s ease,
+    transform 0.3s ease;
+}
+.job-card:hover {
+  border-color: rgba(255, 138, 76, 0.45);
+  transform: translateY(-3px);
+}
+.job-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120px 90px at 100% 0%,
+    rgba(255, 90, 31, 0.14),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.job-card:hover::after {
+  opacity: 1;
+}
+
+.job-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.job-card__title {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 15.5px;
+  color: #f6f3ef;
+  margin-bottom: 6px;
+}
+.job-card__loc {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  color: #948d85;
+}
+.job-card__loc svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+.job-card__desc {
+  font-size: 12.5px;
+  color: #c9c4bd;
+  line-height: 1.55;
+  margin: 12px 0 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.job-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+.job-card__count {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: #948d85;
+}
+.job-card__count svg {
+  width: 13px;
+  height: 13px;
+  color: #ff8a4c;
+}
+.job-card__view {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #ff8a4c;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.job-card__view:hover {
+  color: #ffb37a;
+}
+
+.job-card__actions {
+  display: flex;
+  gap: 5px;
+}
+
+/* ==========================================================================
+   BADGES  (status pills, reused for job + applicant status)
+   ========================================================================== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 4px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.badge::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.badge-active {
+  color: #3ee08c;
+  background: rgba(62, 224, 140, 0.12);
+  border: 1px solid rgba(62, 224, 140, 0.22);
+}
+.badge-active::before {
+  background: #3ee08c;
+}
+.badge-closed {
+  color: #a39c8f;
+  background: rgba(163, 156, 143, 0.1);
+  border: 1px solid rgba(163, 156, 143, 0.18);
+}
+.badge-closed::before {
+  background: #a39c8f;
+}
+
+.badge-new {
+  color: #ff9d5c;
+  background: rgba(255, 138, 76, 0.12);
+  border: 1px solid rgba(255, 138, 76, 0.22);
+}
+.badge-new::before {
+  background: #ff9d5c;
+}
+.badge-shortlisted {
+  color: #5ea8ff;
+  background: rgba(94, 168, 255, 0.12);
+  border: 1px solid rgba(94, 168, 255, 0.22);
+}
+.badge-shortlisted::before {
+  background: #5ea8ff;
+}
+.badge-selected {
+  color: #3ee08c;
+  background: rgba(62, 224, 140, 0.12);
+  border: 1px solid rgba(62, 224, 140, 0.22);
+}
+.badge-selected::before {
+  background: #3ee08c;
+}
+.badge-rejected {
+  color: #ff8080;
+  background: rgba(255, 92, 92, 0.1);
+  border: 1px solid rgba(255, 92, 92, 0.2);
+}
+.badge-rejected::before {
+  background: #ff8080;
+}
+
+/* ==========================================================================
+   TABLE (Applicants)
+   ========================================================================== */
+.enq-row {
+  transition: background 0.18s ease;
+}
+.enq-row:hover {
+  background: rgba(255, 106, 44, 0.045);
+}
+.enq-row:hover .enq-name {
+  color: #ffb37a;
+}
+
+/* ==========================================================================
+   ACTION / ICON BUTTONS
+   ========================================================================== */
+.icon-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: inline-grid;
+  place-items: center;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease,
+    border-color 0.18s ease;
+  cursor: pointer;
+  border: none;
+}
+.icon-btn:hover {
+  transform: translateY(-1px);
+}
+.icon-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.icon-btn-view {
+  background: rgba(255, 106, 44, 0.1);
+  border: 1px solid rgba(255, 106, 44, 0.2);
+  color: #ff8a4c;
+}
+.icon-btn-view:hover {
+  background: rgba(255, 106, 44, 0.18);
+}
+.icon-btn-edit {
+  background: rgba(94, 168, 255, 0.1);
+  border: 1px solid rgba(94, 168, 255, 0.2);
+  color: #5ea8ff;
+}
+.icon-btn-edit:hover {
+  background: rgba(94, 168, 255, 0.18);
+}
+.icon-btn-delete {
+  background: rgba(255, 92, 92, 0.08);
+  border: 1px solid rgba(255, 92, 92, 0.18);
+  color: #ff8080;
+}
+.icon-btn-delete:hover {
+  background: rgba(255, 92, 92, 0.16);
+}
+.icon-btn-toggle {
+  background: rgba(163, 156, 143, 0.08);
+  border: 1px solid rgba(163, 156, 143, 0.18);
+  color: #a39c8f;
+}
+.icon-btn-toggle:hover {
+  background: rgba(163, 156, 143, 0.16);
+}
+
+/* ==========================================================================
+   PAGINATION
+   ========================================================================== */
+.page-btn {
+  min-width: 30px;
+  height: 30px;
+  padding: 0 8px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: #c9c4bd;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+.page-btn:hover:not(:disabled) {
+  border-color: rgba(255, 106, 44, 0.35);
+  color: #f6f3ef;
+}
+.page-btn.is-active {
+  background: linear-gradient(135deg, #ff8a4c, #e6541c);
+  color: #150a04;
+  border-color: transparent;
+  font-weight: 700;
+}
+.page-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   FORMS
+   ========================================================================== */
+.field-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #c9c4bd;
+  margin-bottom: 6px;
+  display: block;
+}
+.field-input,
+.field-textarea,
+.field-select {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 106, 44, 0.16);
+  border-radius: 10px;
+  padding: 10px 13px;
+  font-size: 13px;
+  color: #f6f3ef;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+  font-family: "Inter", sans-serif;
+}
+.field-input::placeholder,
+.field-textarea::placeholder {
+  color: #6d675c;
+}
+.field-input:focus,
+.field-textarea:focus,
+.field-select:focus {
+  border-color: rgba(255, 138, 76, 0.55);
+  background: rgba(255, 255, 255, 0.06);
+}
+.field-textarea {
+  resize: vertical;
+  min-height: 84px;
+}
+.field-error {
+  font-size: 11px;
+  color: #ff8080;
+  margin-top: 5px;
+  display: none;
+}
+.field-group.has-error .field-input,
+.field-group.has-error .field-textarea {
+  border-color: rgba(255, 92, 92, 0.6);
+}
+.field-group.has-error .field-error {
+  display: block;
+}
+
+/* Custom Job Filter Dropdown */
+#appJobFilterPanel.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+#appJobFilterPanel .dropdown-option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 11px 16px;
+  font-size: 13.5px;
+  color: #c9c4bd;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+#appJobFilterPanel .dropdown-option:hover {
+  background: rgba(249, 115, 22, 0.12);
+  color: #ff9d5c;
+}
+
+#appJobFilterPanel .dropdown-option.is-selected {
+  background: rgba(249, 115, 22, 0.18);
+  color: #ff8a4c;
+  font-weight: 500;
+}
+
+#appJobFilterArrow.is-open {
+  transform: rotate(180deg);
+}
+
+/* ==========================================================================
+   MODALS
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(3, 3, 3, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+.modal-overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.modal-panel {
+  transform: translateY(14px) scale(0.97);
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.modal-overlay.is-open .modal-panel {
+  transform: translateY(0) scale(1);
+}
+
+/* Resume preview toggle area */
+.resume-frame-wrap {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  border-radius: 10px;
+}
+.resume-frame-wrap.is-open {
+  max-height: 420px;
+}
+
+/* Save confirmation micro-toast */
+.save-flash {
+  font-size: 11.5px;
+  color: #3ee08c;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.save-flash.is-shown {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 560px) {
+  .page {
+    padding-top: 108px;
+  }
+}

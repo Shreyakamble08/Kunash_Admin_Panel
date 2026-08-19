@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | Kunash Media</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
+  <link rel="shortcut icon" href="/favicon.png" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../Navigation/navigation.css" />
+  <link rel="stylesheet" href="./dashboard.css" />
+</head>
+
+<body>
+
+  <!-- Reusable navigation mounts here (see navigation.js) -->
+  <div id="app-nav-root"></div>
+
+
+  <div class="absolute inset-0 bg-[#030303] overflow-hidden pointer-events-none">
+
+    <!-- Main soft glow (center-top) -->
+    <div class="absolute top-[20%] left-1/2 -translate-x-1/2
+              w-[900px] h-[350px]
+              rounded-full bg-orange-500/10 blur-[180px]">
+    </div>
+
+    <!-- Right soft glow -->
+    <div class="absolute right-[-5%] top-[40%]
+              w-[450px] h-[450px]
+              rounded-full bg-orange-500/12 blur-[150px]">
+    </div>
+
+    <!-- Left subtle glow -->
+    <div class="absolute left-[-10%] bottom-[15%]
+              w-[400px] h-[400px]
+              rounded-full bg-orange-600/8 blur-[160px]">
+    </div>
+
+    <!-- Strong Orange Glow from Bottom-Right Corner -->
+    <div class="absolute -right-20 -bottom-20
+              w-[550px] h-[550px]
+              rounded-full bg-orange-500/18 blur-[160px]">
+    </div>
+
+    <!-- Extra soft spread from same corner -->
+    <div class="absolute right-0 bottom-0
+              w-[400px] h-[400px]
+              rounded-full bg-orange-400/10 blur-[140px]">
+    </div>
+
+    <!-- Vignette -->
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_25%,rgba(0,0,0,0.7)_90%)]"></div>
+
+  </div>
+
+  <main class="page">
+
+    <div class="relative z-10 max-w-[1400px] mx-auto my-2">
+
+      <!-- ============================================================
+           RECENT ENQUIRIES TABLE (FULL WIDTH)
+           ============================================================ -->
+      <div
+        class="relative bg-gradient-to-b from-white/5 to-white/3 backdrop-blur-[22px] border border-orange-500/20 rounded-xl p-[18px] pb-3.5 min-w-0 overflow-hidden">
+
+        <!-- Table header -->
+        <div class="relative z-10 flex justify-between items-center mb-3.5">
+          <h3 class="font-display text-[15px] font-semibold text-[#f6f3ef] m-0 flex items-center gap-2">
+            <svg class="w-4 h-4 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path
+                d="M12 2v4M12 22v-4M4 12H2M22 12h-2M19.07 4.93l-2.83 2.83M4.93 19.07l2.83-2.83M19.07 19.07l-2.83-2.83M4.93 4.93l2.83 2.83"
+                stroke-linecap="round" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            Recent Enquiries
+          </h3>
+          <a href="../Contact/contact.html"
+            class="text-[12px] text-orange-400 hover:text-orange-300 font-medium transition-colors duration-200 flex items-center gap-1 no-underline group-hover:gap-2 transition-all">
+            View All
+            <svg class="w-3 h-3 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        </div>
+
+        <!-- Table -->
+        <div class="relative z-10 overflow-x-auto -mx-1 px-1">
+          <table class="w-full border-collapse text-[12.5px]">
+            <thead>
+              <tr>
+                <th
+                  class="text-left px-2.5 py-2 font-semibold text-orange-300/80 uppercase text-[10px] tracking-wider border-b border-orange-500/20 border-r border-orange-500/10 whitespace-nowrap">
+                  <span class="flex items-center gap-1.5">
+                    <svg class="w-3 h-3 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                    Name
+                  </span>
+                </th>
+                <th
+                  class="text-left px-2.5 py-2 font-semibold text-orange-300/80 uppercase text-[10px] tracking-wider border-b border-orange-500/20 border-r border-orange-500/10 whitespace-nowrap">
+                  <span class="flex items-center gap-1.5">
+                    <svg class="w-3 h-3 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2">
+                      <path
+                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.574 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                    Phone
+                  </span>
+                </th>
+                <th
+                  class="text-left px-2.5 py-2 font-semibold text-orange-300/80 uppercase text-[10px] tracking-wider border-b border-orange-500/20 border-r border-orange-500/10 whitespace-nowrap">
+                  <span class="flex items-center gap-1.5">
+                    <svg class="w-3 h-3 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2">
+                      <path d="M4 4h16v16H4z" stroke-linecap="round" />
+                      <path d="M4 4l8 8 8-8" stroke-linecap="round" />
+                    </svg>
+                    Email
+                  </span>
+                </th>
+                <th
+                  class="text-left px-2.5 py-2 font-semibold text-orange-300/80 uppercase text-[10px] tracking-wider border-b border-orange-500/20 border-r border-orange-500/10 whitespace-nowrap">
+                  <span class="flex items-center gap-1.5">
+                    <svg class="w-3 h-3 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke-linecap="round" />
+                      <path d="M22 4 12 14.01l-3-3" stroke-linecap="round" />
+                    </svg>
+                    Subject
+                  </span>
+                </th>
+                <th
+                  class="text-left px-2.5 py-2 font-semibold text-orange-300/80 uppercase text-[10px] tracking-wider border-b border-orange-500/20 whitespace-nowrap">
+                  <span class="flex items-center gap-1.5">
+                    <svg class="w-3 h-3 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2">
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    </svg>
+                    Message
+                  </span>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="enquiriesTableBody">
+              <!-- Will be populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= BOTTOM SECTION: Applications (Compact - Top 3) ================= -->
+    <section class="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-4 max-w-[1500px] mx-auto mt-5 px-4">
+
+      <!-- Left: Recent Applications -->
+      <div id="recentApplications" class="relative bg-gradient-to-b from-white/5 to-white/3
+    border border-orange-500/20 rounded-xl p-3 overflow-hidden
+    shadow-[0_25px_70px_rgba(0,0,0,0.65),0_8px_25px_rgba(140,140,140,0.08)]">
+
+        <div class="absolute -top-20 right-0
+          w-48 h-48
+          rounded-full
+          bg-white/5
+          blur-3xl
+          pointer-events-none">
+        </div>
+
+        <div class="absolute -bottom-20 -left-10
+          w-40 h-40
+          rounded-full
+          bg-orange-500/10
+          blur-3xl
+          pointer-events-none">
+        </div>
+
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="text-[13px] font-semibold text-[#f6f3ef] flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+            </svg>
+            Recent Applications
+          </h3>
+
+          <a href="../Career/career.html" onclick="localStorage.setItem('careerTab','applicants')"
+            class="text-[11px] text-orange-400 hover:text-orange-300">
+            View All →
+          </a>
+        </div>
+
+        <div class="space-y-1">
+          <!-- Will be populated by JS -->
+        </div>
+      </div>
+
+      <!-- Resume Modal -->
+      <div id="resumeModal"
+        class="fixed inset-0 z-50 hidden items-start justify-center bg-black/70 backdrop-blur-sm pt-28 px-4">
+
+        <div class="relative w-full max-w-4xl h-[70vh] overflow-hidden rounded-xl
+    border border-orange-500/20 bg-[#0d0d0d]
+    shadow-[0_25px_70px_rgba(0,0,0,0.6)]">
+
+          <!-- Header -->
+          <div class="flex h-12 items-center justify-between border-b border-white/10 px-4">
+            <h3 class="text-sm font-medium text-white">Resume Preview</h3>
+
+            <button onclick="closeResume()" class="flex h-7 w-7 items-center justify-center rounded-full
+        text-gray-400 transition hover:bg-white/10 hover:text-white" aria-label="Close">
+              &times;
+            </button>
+          </div>
+
+          <!-- PDF Preview -->
+          <iframe id="resumeFrame" src="" class="h-[calc(70vh-48px)] w-full bg-white">
+          </iframe>
+
+        </div>
+      </div>
+      <!-- Right: Applications by Position -->
+      <div class="relative bg-gradient-to-b from-white/5 to-white/3
+          backdrop-blur-[22px]
+          border border-orange-500/20
+          rounded-xl p-3 overflow-hidden
+          shadow-[0_20px_60px_rgba(0,0,0,0.45)]">
+
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="text-[13px] font-semibold text-[#f6f3ef] flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <path d="M12 20V10" />
+              <path d="M18 20V4" />
+              <path d="M6 20v-4" />
+            </svg>
+            Applications by Position
+          </h3>
+        </div>
+
+        <div id="positionStatsContainer" class="space-y-2.5">
+          <!-- Will be populated by JS -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================
+       SCRIPTS
+       ========================================== -->
+  <script src="../Navigation/navigation.js"></script>
+  <script>
+    // Mount navigation
+    if (window.Navigation) Navigation.mount('#app-nav-root', { active: 'career' });
+
+    // Check localStorage for tab preference
+    const tab = localStorage.getItem('careerTab');
+    if (tab === 'applicants') {
+      // Set a global flag for career.js
+      window.initialTab = 'applicants';
+      // Clear it so it doesn't persist
+      localStorage.removeItem('careerTab');
+    }
+  </script>
+  <script src="./dashboard.js"></script>
+</body>
+
+</html>

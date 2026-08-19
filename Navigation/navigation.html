@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orbital — Navigation Component</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="./navigation.css" />
+
+  <style>
+    /* Page-only styling for this isolated component preview */
+    .preview-shell {
+      min-height: 100vh;
+      padding: 140px 24px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      text-align: center;
+    }
+
+    .preview-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--ember-400);
+    }
+
+    .preview-title {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      max-width: 720px;
+    }
+
+    .preview-sub {
+      color: var(--ink-500);
+      max-width: 520px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .preview-hint {
+      margin-top: 24px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .preview-chip {
+      font-size: 12.5px;
+      color: var(--ink-300);
+      background: var(--surface-1);
+      border: 1px solid var(--surface-border);
+      padding: 8px 14px;
+      border-radius: var(--r-pill);
+    }
+
+    .preview-chip kbd {
+      font-family: var(--font-mono);
+      background: var(--surface-2);
+      padding: 1px 6px;
+      border-radius: 5px;
+      margin: 0 2px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <div id="app-nav-root"></div>
+
+  <main class="page">
+  </main>
+
+  <script src="./navigation.js"></script>
+  <script>
+    Navigation.mount('#app-nav-root', { active: '' });
+  </script>
+</body>
+
+</html>

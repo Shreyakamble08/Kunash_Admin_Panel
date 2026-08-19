@@ -1,0 +1,140 @@
+/* ==========================================================================
+   CONTACT.CSS
+   Contact Enquiries module. Built to sit alongside the existing
+   navigation.css + dashboard.css — reuses the same CSS variables
+   (--ink-*, --ember-*, --surface-*, --r-*, --shadow-soft) wherever they
+   are available, and leans on Tailwind utilities for everything else.
+   ========================================================================== */
+
+.page{
+  width: min(96%, 1600px);
+  margin: 0 auto;
+  padding: 90px 10px 60px;
+}
+
+.font-display{
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+}
+.font-mono{
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ---- Reveal-on-load, matches dashboard.css ---- */
+.reveal{
+  opacity: 0;
+  transform: translateY(14px);
+  animation: reveal .6s cubic-bezier(.22,1,.36,1) forwards;
+}
+@keyframes reveal{ to{ opacity: 1; transform: translateY(0); } }
+
+/* ---- Custom scrollbar for the table ---- */
+.table-scroll::-webkit-scrollbar{ height: 4px; }
+.table-scroll::-webkit-scrollbar-track{ background: rgba(255,255,255,0.035); border-radius: 10px; }
+.table-scroll::-webkit-scrollbar-thumb{ background: rgba(255,106,44,0.3); border-radius: 10px; }
+.table-scroll::-webkit-scrollbar-thumb:hover{ background: rgba(255,106,44,0.5); }
+
+/* ==========================================================================
+   TABLE ROW MICRO-INTERACTIONS
+   (kept out of Tailwind because :hover on a sibling icon needs a parent hook)
+   ========================================================================== */
+.enq-row{ transition: background .18s ease; }
+.enq-row:hover{ background: rgba(255,106,44,0.045); }
+.enq-row:hover .enq-name{ color: #ffb37a; }
+.enq-row:hover .enq-msg{ color: rgba(255,179,122,0.7); }
+
+/* ---- Truncated message preview ---- */
+.msg-truncate{
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   STATUS BADGES
+   ========================================================================== */
+.badge{
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10.5px; font-weight: 600;
+  padding: 4px 9px; border-radius: 999px;
+  white-space: nowrap;
+}
+.badge::before{ content:''; width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.badge-new{ color:#ff9d5c; background: rgba(255,138,76,0.12); border: 1px solid rgba(255,138,76,0.22); }
+.badge-new::before{ background:#ff9d5c; }
+.badge-progress{ color:#5ea8ff; background: rgba(94,168,255,0.12); border: 1px solid rgba(94,168,255,0.22); }
+.badge-progress::before{ background:#5ea8ff; }
+.badge-resolved{ color:#3ee08c; background: rgba(62,224,140,0.12); border: 1px solid rgba(62,224,140,0.22); }
+.badge-resolved::before{ background:#3ee08c; }
+.badge-closed{ color:#a39c8f; background: rgba(163,156,143,0.1); border: 1px solid rgba(163,156,143,0.18); }
+.badge-closed::before{ background:#a39c8f; }
+
+/* ==========================================================================
+   ACTION BUTTONS
+   ========================================================================== */
+.icon-btn{
+  width: 28px; height: 28px; border-radius: 8px;
+  display: inline-grid; place-items: center;
+  transition: background .18s ease, color .18s ease, transform .18s ease, border-color .18s ease;
+  cursor: pointer;
+}
+.icon-btn:hover{ transform: translateY(-1px); }
+.icon-btn svg{ width: 14px; height: 14px; }
+
+.icon-btn-view{
+  background: rgba(255,106,44,0.1); border: 1px solid rgba(255,106,44,0.2); color: #ff8a4c;
+}
+.icon-btn-view:hover{ background: rgba(255,106,44,0.18); }
+
+.icon-btn-delete{
+  background: rgba(255,92,92,0.08); border: 1px solid rgba(255,92,92,0.18); color: #ff8080;
+}
+.icon-btn-delete:hover{ background: rgba(255,92,92,0.16); }
+
+/* ==========================================================================
+   PAGINATION
+   ========================================================================== */
+.page-btn{
+  min-width: 30px; height: 30px; padding: 0 8px;
+  border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 500;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  color: #c9c4bd;
+  cursor: pointer;
+  transition: background .18s ease, border-color .18s ease, color .18s ease;
+}
+.page-btn:hover:not(:disabled){ border-color: rgba(255,106,44,0.35); color: #f6f3ef; }
+.page-btn.is-active{
+  background: linear-gradient(135deg, #ff8a4c, #e6541c);
+  color: #150a04; border-color: transparent; font-weight: 700;
+}
+.page-btn:disabled{ opacity: .35; cursor: not-allowed; }
+
+/* ==========================================================================
+   MODALS
+   ========================================================================== */
+.modal-overlay{
+  position: fixed; inset: 0; z-index: 60;
+  background: rgba(3,3,3,0.72);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .22s ease;
+}
+.modal-overlay.is-open{ opacity: 1; pointer-events: auto; }
+
+.modal-panel{
+  transform: translateY(14px) scale(.97);
+  transition: transform .28s cubic-bezier(.22,1,.36,1);
+}
+.modal-overlay.is-open .modal-panel{ transform: translateY(0) scale(1); }
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 560px){
+  .page{ padding-top: 108px; }
+}

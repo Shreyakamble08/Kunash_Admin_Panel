@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact | Kunash Media</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
+    <link rel="shortcut icon" href="/favicon.png" />
+
+    <!-- Shared tokens from the navigation component -->
+    <link rel="stylesheet" href="../Navigation/navigation.css" />
+    <link rel="stylesheet" href="./contact.css" />
+</head>
+
+<body>
+
+    <!-- Navigation mounts here -->
+    <div id="app-nav-root"></div>
+
+    <!-- Ambient background -->
+    <div class="absolute inset-0 bg-[#030303] overflow-hidden pointer-events-none -z-10">
+        <div
+            class="absolute top-[20%] left-1/2 -translate-x-1/2 w-[900px] h-[350px] rounded-full bg-orange-500/10 blur-[180px]">
+        </div>
+        <div class="absolute right-[-5%] top-[40%] w-[450px] h-[450px] rounded-full bg-orange-500/12 blur-[150px]">
+        </div>
+        <div class="absolute left-[-10%] bottom-[15%] w-[400px] h-[400px] rounded-full bg-orange-600/8 blur-[160px]">
+        </div>
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_25%,rgba(0,0,0,0.7)_90%)]"></div>
+    </div>
+
+    <!-- ============================================================
+       PAGE CONTENT — Contact Enquiries module
+       ============================================================ -->
+    <main class="page relative z-10">
+
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5" id="statsGrid"></div>
+
+        <!-- Toolbar -->
+        <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-4 reveal" style="animation-delay:120ms">
+            <div class="relative flex-1 min-w-0">
+                <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6d675c] pointer-events-none"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="7" />
+                    <path d="m21 21-4.3-4.3" stroke-linecap="round" />
+                </svg>
+                <input id="searchInput" type="text" placeholder="Search by name, email, phone, or subject…"
+                    class="w-full bg-white/[0.04] border border-orange-500/15 rounded-lg pl-10 pr-4 py-2.5 text-[13px] text-[#f6f3ef] placeholder:text-[#6d675c] outline-none focus:border-orange-400/50 transition-colors" />
+            </div>
+        </div>
+
+        <!-- Table Card -->
+        <div class="relative bg-gradient-to-b from-white/5 to-white/3 backdrop-blur-[22px] border border-orange-500/20 rounded-xl p-[18px] pb-4 overflow-hidden reveal"
+            style="animation-delay:180ms">
+            <div class="absolute -top-20 right-0 w-48 h-48 rounded-full bg-white/5 blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 table-scroll overflow-x-auto -mx-1 px-1">
+                <table class="w-full border-collapse text-[12.5px] min-w-[880px]">
+                    <thead>
+                        <tr>
+                            <th
+                                class="text-left px-2.5 py-2 font-semibold text-orange-300/80 uppercase text-[10px] tracking-wider border-b border-orange-500/20 border-r border-orange-500/10 whitespace-nowrap">
+                                Name</th>
+                            <th
+                                class="text-left px-2.5 py-2 font-semibold text-orange-300/80 uppercase text-[10px] tracking-wider border-b border-orange-500/20 border-r border-orange-500/10 whitespace-nowrap">
+                                Phone</th>
+                            <th
+                                class="text-left px-2.5 py-2 font-semibold text-orange-300/80 uppercase text-[10px] tracking-wider border-b border-orange-500/20 border-r border-orange-500/10 whitespace-nowrap">
+                                Email</th>
+                            <th
+                                class="text-left px-2.5 py-2 font-semibold text-orange-300/80 uppercase text-[10px] tracking-wider border-b border-orange-500/20 border-r border-orange-500/10 whitespace-nowrap">
+                                Subject</th>
+                            <th
+                                class="text-left px-2.5 py-2 font-semibold text-orange-300/80 uppercase text-[10px] tracking-wider border-b border-orange-500/20 border-r border-orange-500/10 whitespace-nowrap">
+                                Message</th>
+                            <th
+                                class="text-left px-2.5 py-2 font-semibold text-orange-300/80 uppercase text-[10px] tracking-wider border-b border-orange-500/20 border-r border-orange-500/10 whitespace-nowrap">
+                                Date</th>
+                            <th
+                                class="text-left px-2.5 py-2 font-semibold text-orange-300/80 uppercase text-[10px] tracking-wider border-b border-orange-500/20 whitespace-nowrap">
+                                Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="enqTableBody"></tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div
+                class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 mt-1 border-t border-orange-500/10">
+                <span id="resultCount" class="text-[12px] text-[#948d85]"></span>
+                <div id="pagination" class="flex items-center gap-1.5"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ================= VIEW MODAL ================= -->
+    <div id="viewModal" class="modal-overlay">
+        <div
+            class="modal-panel relative bg-[#0d0d0d] border border-orange-500/20 rounded-2xl w-[92vw] max-w-lg shadow-[0_30px_80px_rgba(0,0,0,0.6)] overflow-hidden">
+            <div class="flex justify-between items-center px-5 py-3.5 border-b border-orange-500/10">
+                <h3 class="text-[#f6f3ef] font-display font-semibold text-[15px]">Enquiry details</h3>
+                <button type="button" data-close-modal="viewModal"
+                    class="w-8 h-8 rounded-full flex items-center justify-center text-orange-400 hover:text-white hover:bg-orange-500/10 transition"
+                    aria-label="Close">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 6l12 12M18 6 6 18" stroke-linecap="round" />
+                    </svg>
+                </button>
+            </div>
+            <div id="viewModalBody" class="p-5 max-h-[70vh] overflow-y-auto"></div>
+        </div>
+    </div>
+
+    <!-- ================= DELETE CONFIRM MODAL ================= -->
+    <div id="deleteModal" class="modal-overlay">
+        <div
+            class="modal-panel relative bg-[#0d0d0d] border border-orange-500/20 rounded-2xl w-[92vw] max-w-sm shadow-[0_30px_80px_rgba(0,0,0,0.6)] overflow-hidden">
+            <div class="p-6 text-center">
+                <div
+                    class="w-12 h-12 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M10.3 3.9 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M12 9v4M12 17h.01" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <h3 class="text-[#f6f3ef] font-display font-semibold text-[16px] mb-1.5">Delete this enquiry?</h3>
+                <p class="text-[13px] text-[#948d85] leading-relaxed">
+                    This will permanently remove the enquiry from <span id="deleteModalName"
+                        class="text-[#c9c4bd] font-medium"></span>. This cannot be undone.
+                </p>
+                <div class="flex gap-2.5 mt-6">
+                    <button type="button" data-close-modal="deleteModal"
+                        class="flex-1 py-2.5 rounded-lg border border-white/10 text-[#c9c4bd] text-[13px] font-medium hover:bg-white/5 transition-colors">Cancel</button>
+                    <button type="button" id="confirmDeleteBtn"
+                        class="flex-1 py-2.5 rounded-lg bg-red-500/90 hover:bg-red-500 text-white text-[13px] font-semibold transition-colors">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= SCRIPTS ================= -->
+    <script src="../Navigation/navigation.js"></script>
+    <script>
+        // Mount navigation when DOM is ready
+        document.addEventListener('DOMContentLoaded', function () {
+            if (document.getElementById('app-nav-root')) {
+                Navigation.mount('#app-nav-root', { active: 'contact' });
+            }
+        });
+    </script>
+    <script src="./contact.js"></script>
+</body>
+
+</html>

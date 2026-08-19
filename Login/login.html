@@ -1,0 +1,1094 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Admin Login — Kunash</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
+    <link rel="shortcut icon" href="/favicon.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        quicksand: ["Quicksand", "sans-serif"],
+                    },
+                },
+            },
+        };
+    </script>
+
+    <style>
+        /* ============================================================
+           PREMIUM LOGIN STYLES
+           ============================================================ */
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+
+            background:
+                radial-gradient(circle at 15% 20%,
+                    rgba(194, 65, 12, 0.12),
+                    transparent 35%),
+                radial-gradient(circle at 85% 80%,
+                    rgba(154, 52, 18, 0.1),
+                    transparent 40%),
+                linear-gradient(135deg, #050505 0%, #0d0908 45%, #080808 100%);
+
+            font-family:
+                "Inter",
+                -apple-system,
+                BlinkMacSystemFont,
+                sans-serif;
+
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            margin: 0;
+        }
+
+        /* ---------- Glow Orbs ---------- */
+        .glow-orbs {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .glow-orbs .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.1;
+        }
+
+        .glow-orbs .orb-1 {
+            width: 380px;
+            height: 380px;
+            top: -120px;
+            left: -120px;
+            background: #f94b16;
+            opacity: 0.50;
+        }
+
+        .glow-orbs .orb-2 {
+            width: 420px;
+            height: 420px;
+            bottom: -140px;
+            right: -140px;
+            background: #f94b16;
+            opacity: 0.30;
+        }
+
+        .glow-orbs .orb-3 {
+            width: 200px;
+            height: 200px;
+            top: 40%;
+            right: 10%;
+            background: #fb923c;
+            opacity: 0.04;
+        }
+
+        /* ---------- Card ---------- */
+        .login-card {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            width: 100%;
+            max-width: 1000px;
+            overflow: hidden;
+            border-radius: 20px;
+
+            /* 3D glass border */
+            border: 1px solid rgba(255, 255, 255, 0.16);
+
+            background: rgba(255, 255, 255, 0.025);
+
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+
+            /* Raised 3D shadow */
+            box-shadow:
+                /* Outer depth */
+                0 35px 80px rgba(0, 0, 0, 0.65),
+
+                /* Soft surrounding glow */
+                0 10px 35px rgba(194, 65, 12, 0.08),
+
+                /* Dark bottom depth */
+                0 18px 25px rgba(0, 0, 0, 0.35),
+
+                /* Bright top glass edge */
+                inset 0 1px 0 rgba(255, 255, 255, 0.18),
+
+                /* Dark bottom inner edge */
+                inset 0 -1px 0 rgba(0, 0, 0, 0.45),
+
+                /* Left highlight */
+                inset 1px 0 0 rgba(255, 255, 255, 0.06),
+
+                /* Right shadow */
+                inset -1px 0 0 rgba(0, 0, 0, 0.25);
+        }
+
+        @media (min-width: 1024px) {
+            .login-card {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* ---------- Left Panel (Brand) ---------- */
+        .brand-panel {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100%;
+            padding: 50px 35px;
+            text-align: center;
+            overflow: hidden;
+
+            /* Background Image */
+            background:
+                linear-gradient(135deg,
+                    rgba(5, 5, 5, 0.619) 0%,
+                    rgba(10, 10, 10, 0.493) 45%,
+                    rgba(249, 115, 22, 0.12) 100%),
+                url("/login.jfif") center center / cover no-repeat;
+        }
+
+        /* Orange subtle glow */
+        .brand-panel::after {
+            content: "";
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            background: rgba(249, 115, 22, 0.16);
+            filter: blur(100px);
+            bottom: -180px;
+            right: -150px;
+            z-index: 1;
+        }
+
+        .brand-panel>* {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* =========================
+   LOGO - NO CONTAINER
+========================= */
+
+        .brand-logo {
+            width: 145px;
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-logo img {
+            width: 100%;
+            height: auto;
+            max-height: 95px;
+            object-fit: contain;
+
+            /* Makes logo stand out on background */
+            filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 18px rgba(249, 115, 22, 0.12));
+
+            transition: transform 0.3s ease;
+        }
+
+        .brand-logo:hover img {
+            transform: scale(1.04);
+        }
+
+        /* =========================
+   TITLE
+========================= */
+
+        .brand-title {
+            margin: 0;
+            font-family: "Quicksand", "Poppins", Arial, sans-serif;
+            font-size: clamp(36px, 3.5vw, 50px);
+            font-weight: 600;
+            line-height: 1.1;
+            letter-spacing: -0.035em;
+            color: #ffffff;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+        }
+
+        .brand-title span {
+            margin-left: 7px;
+            background: linear-gradient(135deg,
+                    #fed7aa 0%,
+                    #fb923c 45%,
+                    #f97316 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* =========================
+   DESCRIPTION
+========================= */
+
+        .brand-sub {
+            max-width: 330px;
+            margin: 16px 0 0;
+
+            font-family: "Inter", "Poppins", Arial, sans-serif;
+
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.68);
+        }
+
+        /* =========================
+   SECURE BADGE
+========================= */
+
+        .brand-badge {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            margin-top: 28px;
+
+            font-family: "Inter", "Poppins", Arial, sans-serif;
+
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+
+            color: rgba(255, 255, 255, 0.52);
+        }
+
+        .brand-badge .dot {
+            width: 7px;
+            height: 7px;
+            flex-shrink: 0;
+
+            border-radius: 50%;
+            background: #f97316;
+
+            box-shadow:
+                0 0 8px rgba(249, 115, 22, 0.8),
+                0 0 18px rgba(249, 115, 22, 0.35);
+
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.55;
+                transform: scale(0.8);
+            }
+        }
+
+        /* =========================
+   MOBILE
+========================= */
+
+        @media (max-width: 768px) {
+            .brand-panel {
+                min-height: 380px;
+                padding: 45px 25px;
+
+                background-position: center;
+            }
+
+            .brand-logo {
+                width: 125px;
+                margin-bottom: 24px;
+            }
+
+            .brand-logo img {
+                max-height: 80px;
+            }
+
+            .brand-title {
+                font-size: 32px;
+            }
+
+            .brand-sub {
+                max-width: 280px;
+                font-size: 13px;
+            }
+        }
+
+        /* ---------- Right Panel (Form) ---------- */
+
+        .form-panel {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 40px 36px;
+            min-height: 440px;
+            overflow: hidden;
+
+            background:
+                repeating-linear-gradient(45deg,
+                    rgba(255, 255, 255, 0.012) 0px,
+                    rgba(255, 255, 255, 0.012) 1px,
+                    transparent 1px,
+                    transparent 4px),
+                repeating-linear-gradient(-45deg,
+                    rgba(194, 65, 12, 0.012) 0px,
+                    rgba(194, 65, 12, 0.012) 1px,
+                    transparent 1px,
+                    transparent 5px),
+                radial-gradient(circle at 85% 20%,
+                    rgba(194, 65, 12, 0.18) 0%,
+                    rgba(154, 52, 18, 0.1) 30%,
+                    transparent 55%),
+                radial-gradient(circle at 15% 90%,
+                    rgba(124, 45, 18, 0.1),
+                    transparent 45%),
+                linear-gradient(145deg, #090909 0%, #160d0b 55%, #0d0909 100%);
+
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+
+            backdrop-filter: blur(20px) saturate(130%);
+            -webkit-backdrop-filter: blur(20px) saturate(130%);
+        }
+
+        /* Subtle orange ambient light */
+        .form-panel::before {
+            content: "";
+            position: absolute;
+
+            width: 300px;
+            height: 300px;
+
+            top: -180px;
+            right: -160px;
+
+            border-radius: 50%;
+
+            background: rgba(249, 115, 22, 0.1);
+            filter: blur(90px);
+
+            pointer-events: none;
+        }
+
+        /* Keep form content above background effect */
+        .form-panel>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ---------- Form Content Only  ---------- */
+        .form-container {
+            width: 100%;
+            max-width: 460px;
+            background: transparent;
+            border: none;
+            padding: 0;
+            box-shadow: none;
+            border-radius: 0;
+        }
+
+        /* ---------- Desktop ---------- */
+        @media (min-width: 1024px) {
+            .form-panel {
+                min-height: 450px;
+                padding: 38px 42px;
+                border-top: none;
+                border-left: 1px solid rgba(255, 255, 255, 0.07);
+            }
+        }
+
+        /* ---------- Mobile ---------- */
+        @media (max-width: 480px) {
+            .form-panel {
+                min-height: auto;
+                padding: 28px 20px;
+            }
+
+            .form-container {
+                max-width: 100%;
+            }
+        }
+
+        /* ---------- Form Header ---------- */
+        .form-header {
+            margin-bottom: 28px;
+        }
+
+        /* ---------- Error Message ---------- */
+        .error-box {
+            display: none;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px 14px;
+            margin-bottom: 18px;
+            border-radius: 10px;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            background: rgba(239, 68, 68, 0.06);
+        }
+
+        .error-box.visible {
+            display: flex;
+        }
+
+        .error-box i {
+            color: #f87171;
+            font-size: 13px;
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+
+        .error-box span {
+            font-size: 12px;
+            line-height: 1.4;
+            color: #fca5a5;
+        }
+
+        /* ---------- Form Fields ---------- */
+        .field-group {
+            margin-bottom: 16px;
+        }
+
+        .field-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 5px;
+            letter-spacing: 0.02em;
+        }
+
+        .field-group label i {
+            color: #fb923c;
+            font-size: 10px;
+            margin-right: 6px;
+        }
+
+        .field-group .input-wrap {
+            position: relative;
+        }
+
+        .field-group .input-wrap input {
+            width: 100%;
+            height: 42px;
+            padding: 0 40px 0 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.03);
+            color: #fff;
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.25s ease;
+        }
+
+        .field-group .input-wrap input::placeholder {
+            color: rgba(255, 255, 255, 0.15);
+        }
+
+        .field-group .input-wrap input:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .field-group .input-wrap input:focus {
+            border-color: rgba(249, 115, 22, 0.4);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.06);
+        }
+
+        .field-group .input-wrap .field-icon {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.15);
+            pointer-events: none;
+            transition: color 0.25s ease;
+        }
+
+        .field-group .input-wrap input:focus~.field-icon {
+            color: rgba(249, 115, 22, 0.4);
+        }
+
+        /* ---------- Login Button ---------- */
+        .login-btn {
+            position: relative;
+            width: 100%;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #fb923c, #f97316);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 8px 25px rgba(249, 115, 22, 0.15);
+            overflow: hidden;
+            margin-top: 4px;
+        }
+
+        .login-btn::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.1),
+                    transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .login-btn:hover:not(:disabled)::before {
+            opacity: 1;
+        }
+
+        .login-btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 35px rgba(249, 115, 22, 0.25);
+        }
+
+        .login-btn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-btn .btn-content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-btn .btn-spinner {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-btn .btn-spinner .spinner {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #fff;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .login-btn.loading .btn-content {
+            display: none;
+        }
+
+        .login-btn.loading .btn-spinner {
+            display: flex;
+        }
+
+        /* ---------- Divider ---------- */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 20px 0 18px;
+        }
+
+        .divider .line {
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .divider span {
+            font-size: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* ---------- Footer ---------- */
+        .form-footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.15);
+            letter-spacing: 0.04em;
+        }
+
+        .form-footer a {
+            color: #fb923c;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .form-footer a:hover {
+            color: #f97316;
+        }
+
+        .form-footer .sep {
+            margin: 0 4px;
+            color: rgba(255, 255, 255, 0.08);
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 480px) {
+            body {
+                padding: 12px;
+            }
+
+            .brand-panel {
+                min-height: 200px;
+                padding: 24px 16px;
+            }
+
+            .brand-logo {
+                width: 52px;
+                height: 52px;
+                margin-bottom: 14px;
+            }
+
+            .brand-title {
+                font-size: 22px;
+            }
+
+            .brand-sub {
+                font-size: 12px;
+            }
+
+            .form-panel {
+                padding: 24px 16px;
+                min-height: auto;
+            }
+
+            .form-container {
+                max-width: 100%;
+            }
+
+            .field-group .input-wrap input {
+                height: 38px;
+                font-size: 12px;
+            }
+
+            .login-btn {
+                height: 38px;
+                font-size: 12px;
+            }
+
+            .demo-box .cred {
+                font-size: 10px;
+                padding: 1px 8px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .brand-panel {
+                min-height: 160px;
+                padding: 16px 12px;
+            }
+
+            .brand-logo {
+                width: 44px;
+                height: 44px;
+            }
+
+            .brand-title {
+                font-size: 18px;
+            }
+
+            .brand-sub {
+                font-size: 11px;
+                max-width: 200px;
+            }
+
+            .brand-badge {
+                font-size: 8px;
+                margin-top: 12px;
+            }
+
+            .form-panel {
+                padding: 16px 12px;
+            }
+
+            .field-group {
+                margin-bottom: 12px;
+            }
+        }
+
+        @media (min-width: 481px) and (max-width: 768px) {
+            .brand-panel {
+                min-height: 220px;
+            }
+
+            .brand-logo {
+                width: 58px;
+                height: 58px;
+            }
+
+            .brand-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ============================================================
+         GLOW ORBS
+         ============================================================ -->
+    <div class="glow-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- ============================================================
+         LOGIN CARD
+         ============================================================ -->
+    <div class="login-card">
+        <!-- ========== LEFT: BRAND ========== -->
+        <div class="brand-panel">
+            <!-- Logo -->
+            <div class="brand-logo">
+                <img src="/logo.png" alt="Kunash Logo" />
+            </div>
+
+            <!-- Title -->
+            <h1 class="brand-title">Admin<span>Panel</span></h1>
+
+            <!-- Description -->
+            <p class="brand-sub">
+                Manage your website, track performance, and grow your business.
+            </p>
+
+            <!-- Badge -->
+            <div class="brand-badge">
+                <span class="dot"></span>
+                Secure Admin Access
+            </div>
+        </div>
+
+        <!-- ========== RIGHT: FORM ========== -->
+        <div class="form-panel">
+            <div class="form-container">
+                <!-- Header -->
+                <div class="form-header flex items-center gap-4">
+                    <!-- Icon -->
+                    <div
+                        class="icon-wrap shrink-0 inline-flex items-center justify-center w-11 h-11 rounded-2xl border border-orange-700/20 bg-gradient-to-br from-orange-700/15 to-red-950/10 text-orange-500 text-sm shadow-[0_8px_30px_rgba(194,65,12,0.12)] transition-all duration-300 hover:-translate-y-1 hover:border-orange-600/35 hover:shadow-[0_12px_35px_rgba(194,65,12,0.18)]">
+                        <i class="fas fa-lock"></i>
+                    </div>
+
+                    <!-- Heading + Subtitle -->
+                    <div>
+                        <h2 class="font-quicksand text-3xl font-semibold tracking-[-0.035em] leading-tight text-white">
+                            Welcome Back !
+                        </h2>
+
+                        <p class="mt-1 font-quicksand text-[13px] font-medium leading-relaxed text-white/40">
+                            Sign in to your admin account
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Error Message -->
+                <div class="error-box" id="errorBox">
+                    <i class="fas fa-circle-exclamation"></i>
+                    <span id="errorText">Invalid credentials</span>
+                </div>
+
+                <!-- Form -->
+                <form id="loginForm" autocomplete="off">
+                    <!-- Email -->
+                    <div class="field-group">
+                        <label for="email">
+                            <i class="fas fa-envelope"></i>
+                            Email Address
+                        </label>
+                        <div class="input-wrap">
+                            <input type="email" id="email" value="admin@kunash.com" placeholder="Enter your email"
+                                autocomplete="email" required autofocus />
+                            <i class="fas fa-user field-icon"></i>
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="field-group">
+                        <label for="password">
+                            <i class="fas fa-lock"></i>
+                            Password
+                        </label>
+                        <div class="input-wrap">
+                            <input type="password" id="password" value="Admin@123!" placeholder="Enter your password"
+                                autocomplete="current-password" required />
+                            <i class="fas fa-key field-icon"></i>
+                        </div>
+                    </div>
+
+                    <!-- Login Button -->
+                    <button type="submit" class="login-btn" id="loginBtn">
+                        <span class="btn-content">
+                            <i class="fas fa-arrow-right-to-bracket"></i>
+                            Sign In
+                        </span>
+                        <span class="btn-spinner">
+                            <span class="spinner"></span>
+                            Signing in...
+                        </span>
+                    </button>
+                </form>
+
+                <!-- Divider -->
+                <div class="divider">
+                    <span class="line"></span>
+                    <span>Quick Demo</span>
+                    <span class="line"></span>
+                </div>
+
+                <!-- Demo Credentials -->
+                <div
+                    class="mt-2 rounded-xl border border-orange-500/25 bg-gradient-to-br from-orange-500/[0.12] via-white/[0.035] to-[#111111] px-2 py-2.5 shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
+                    <!-- Header -->
+                    <div class="mb-2.5 flex items-center gap-2">
+                        <div
+                            class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-orange-400/30 bg-orange-500/15 text-orange-400 shadow-[0_0_12px_rgba(249,115,22,0.12)]">
+                            <i class="fas fa-key text-[10px]"></i>
+                        </div>
+
+                        <span class="font-quicksand text-[11px] font-bold uppercase tracking-[0.08em] text-orange-300">
+                            Test Credentials
+                        </span>
+                    </div>
+
+                    <!-- Credentials -->
+                    <div
+                        class="flex items-center gap-2 rounded-lg border border-white/[0.12] bg-black/40 px-3.5 py-2.5">
+                        <i class="fas fa-envelope text-[10px] text-white/50"></i>
+
+                        <span class="font-quicksand text-[11px] font-semibold text-white">
+                            admin@kunash.com
+                        </span>
+
+                        <span class="mx-1 h-5 w-px bg-white/15"></span>
+
+                        <i class="fas fa-lock text-[10px] text-orange-400/70"></i>
+
+                        <span class="font-quicksand text-[11px] font-semibold text-orange-200">
+                            Admin@123!
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="form-footer">
+                    &copy; 2026
+                    <a href="#">Kunash</a>
+                    <span class="sep">—</span>
+                    All rights reserved.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         JAVASCRIPT
+         ============================================================ -->
+    <script>
+        (function () {
+            "use strict";
+
+            // ============================================================
+            // CONFIG
+            // ============================================================
+            const API_BASE = "http://localhost:8080/api";
+            const REDIRECT_KEY = "redirectAfterLogin";
+            const TOKEN_KEY = "adminToken";
+            const USER_KEY = "adminUser";
+
+            // ============================================================
+            // DOM REFS
+            // ============================================================
+            const form = document.getElementById("loginForm");
+            const emailInput = document.getElementById("email");
+            const passwordInput = document.getElementById("password");
+            const loginBtn = document.getElementById("loginBtn");
+            const errorBox = document.getElementById("errorBox");
+            const errorText = document.getElementById("errorText");
+
+            let errorTimeout = null;
+
+            // ============================================================
+            // CHECK EXISTING SESSION
+            // ============================================================
+            const existingToken = localStorage.getItem(TOKEN_KEY);
+            if (existingToken) {
+                validateToken(existingToken);
+            }
+
+            async function validateToken(token) {
+                try {
+                    const res = await fetch(`${API_BASE}/contact/admin/count`, {
+                        method: "GET",
+                        headers: { Authorization: `Bearer ${token}` },
+                    });
+
+                    if (res.ok) {
+                        const redirect =
+                            localStorage.getItem(REDIRECT_KEY) ||
+                            "../dashboard/dashboard.html";
+                        localStorage.removeItem(REDIRECT_KEY);
+                        window.location.href = redirect;
+                    } else {
+                        localStorage.removeItem(TOKEN_KEY);
+                        localStorage.removeItem(USER_KEY);
+                    }
+                } catch (_) {
+                    // Backend not running — skip validation
+                }
+            }
+
+            // ============================================================
+            // FORM SUBMIT
+            // ============================================================
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                hideError();
+
+                const email = emailInput.value.trim();
+                const password = passwordInput.value.trim();
+
+                if (!email || !password) {
+                    showError("Please enter both email and password");
+                    return;
+                }
+
+                setLoading(true);
+
+                try {
+                    const res = await fetch(`${API_BASE}/auth/login`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ email, password }),
+                    });
+
+                    const data = await res.json();
+
+                    if (data.success) {
+                        localStorage.setItem(TOKEN_KEY, data.data.token);
+                        localStorage.setItem(USER_KEY, JSON.stringify(data.data.admin));
+
+                        const redirect =
+                            localStorage.getItem(REDIRECT_KEY) ||
+                            "../dashboard/dashboard.html";
+                        localStorage.removeItem(REDIRECT_KEY);
+                        window.location.href = redirect;
+                    } else {
+                        showError(data.message || "Invalid email or password");
+                    }
+                } catch (_) {
+                    showError(
+                        "Unable to connect to the server. Please check if the backend is running.",
+                    );
+                } finally {
+                    setLoading(false);
+                }
+            });
+
+            // ============================================================
+            // UI HELPERS
+            // ============================================================
+            function setLoading(isLoading) {
+                loginBtn.disabled = isLoading;
+                loginBtn.classList.toggle("loading", isLoading);
+            }
+
+            function showError(msg) {
+                errorText.textContent = msg;
+                errorBox.classList.add("visible");
+
+                clearTimeout(errorTimeout);
+                errorTimeout = setTimeout(hideError, 5000);
+            }
+
+            function hideError() {
+                errorBox.classList.remove("visible");
+                clearTimeout(errorTimeout);
+            }
+
+            // ============================================================
+            // ESCAPE KEY
+            // ============================================================
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") hideError();
+            });
+
+            // ============================================================
+            // CONSOLE
+            // ============================================================
+            console.log("✅ Kunash Admin Login Loaded");
+        })();
+    </script>
+</body>
+
+</html>

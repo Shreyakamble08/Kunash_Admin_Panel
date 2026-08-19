@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Career Management| Kunash Media </title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
+    <link rel="shortcut icon" href="/favicon.png" />
+
+    <!-- Shared tokens from the existing navigation component -->
+    <link rel="stylesheet" href="../Navigation/navigation.css" />
+    <link rel="stylesheet" href="./career.css" />
+</head>
+
+<body>
+
+    <!-- Existing external header/navigation mounts here — not part of this module -->
+    <div id="app-nav-root"></div>
+
+    <!-- Ambient background, matched to the rest of the app -->
+    <div class="absolute inset-0 bg-[#030303] overflow-hidden pointer-events-none -z-10">
+        <div
+            class="absolute top-[20%] left-1/2 -translate-x-1/2 w-[900px] h-[350px] rounded-full bg-orange-500/10 blur-[180px]">
+        </div>
+        <div class="absolute right-[-5%] top-[40%] w-[450px] h-[450px] rounded-full bg-orange-500/12 blur-[150px]">
+        </div>
+        <div class="absolute left-[-10%] bottom-[15%] w-[400px] h-[400px] rounded-full bg-orange-600/8 blur-[160px]">
+        </div>
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_25%,rgba(0,0,0,0.7)_90%)]"></div>
+    </div>
+
+    <!-- ============================================================
+       PAGE CONTENT — Career Management module
+       ============================================================ -->
+    <main class="page relative z-10">
+
+        <!-- ================= PAGE HEADER ================= -->
+        <div class="flex flex-wrap items-end justify-between gap-4 mb-6 reveal">
+            <div>
+                <h1 class="font-display text-[24px] sm:text-[28px] font-semibold text-[#f6f3ef] tracking-tight">Career
+                    Management</h1>
+                <p class="text-[13px] text-[#948d85] mt-1.5">Post job openings and manage every application in one
+                    place.</p>
+            </div>
+            <button type="button" id="addJobBtn"
+                class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-br from-[#ff8a4c] to-[#e6541c] text-[#150a04] text-[13px] font-semibold hover:opacity-90 transition-opacity">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M12 5v14M5 12h14" stroke-linecap="round" />
+                </svg>
+                Post new job
+            </button>
+        </div>
+
+        <!-- ================= UNIFIED CONTROLS ROW: tabs (left) + search (center, expanding) + filters (right, fixed width) ================= -->
+        <div class="controls-row flex flex-col lg:flex-row lg:items-center gap-3 mb-6 reveal" id="controlsRow"
+            style="animation-delay:60ms">
+
+            <div class="tabs shrink-0">
+                <button type="button" class="tab-btn is-active" data-tab="jobs">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="7" width="20" height="14" rx="2.2" />
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    Job Openings <span class="count" id="jobsTabCount">0</span>
+                </button>
+                <button type="button" class="tab-btn" data-tab="applicants">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="8" r="3.5" />
+                        <path d="M2 20a7 7 0 0 1 14 0M19 8v6M22 11h-6" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    Applicants <span class="count" id="applicantsTabCount">0</span>
+                </button>
+            </div>
+
+            <!-- Jobs toolbar: search (expanding) + status filter (fixed width) — shown while the Job Openings tab is active -->
+            <div class="toolbar toolbar-jobs flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-3">
+                <!-- ✅ ADD THIS SEARCH INPUT -->
+                <div class="relative flex-1 min-w-0">
+                    <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6d675c] pointer-events-none"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="7" />
+                        <path d="m21 21-4.3-4.3" stroke-linecap="round" />
+                    </svg>
+                    <input id="jobSearchInput" type="text" placeholder="Search jobs…"
+                        class="w-full bg-white/[0.04] border border-orange-500/15 rounded-lg pl-10 pr-4 py-2.5 text-[13px] text-[#f6f3ef] placeholder:text-[#6d675c] outline-none focus:border-orange-400/50 transition-colors" />
+                </div>
+            </div>
+            <!-- Applicants toolbar: search (expanding) + job filter + status filter (both fixed width) — shown while the Applicants tab is active -->
+            <div class="toolbar toolbar-applicants flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-3">
+                <div class="relative flex-1 min-w-0">
+                    <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6d675c] pointer-events-none"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="7" />
+                        <path d="m21 21-4.3-4.3" stroke-linecap="round" />
+                    </svg>
+                    <input id="appSearchInput" type="text" placeholder="Search by name, email, or phone…"
+                        class="w-full bg-white/[0.04] border border-orange-500/15 rounded-lg pl-10 pr-4 py-2.5 text-[13px] text-[#f6f3ef] placeholder:text-[#6d675c] outline-none focus:border-orange-400/50 transition-colors" />
+                </div>
+                <div class="relative w-full sm:w-52">
+                    <select id="appJobFilter" class="appearance-none w-full rounded-xl
+                        border border-orange-500/20
+                        bg-gradient-to-br from-[#181818] to-[#111111]
+                        px-4 pr-11 py-3
+                        text-sm font-medium text-gray-100
+                        shadow-[0_8px_25px_rgba(0,0,0,0.35)]
+                        transition-all duration-300
+                        hover:border-orange-500/40
+                        hover:bg-[#1b1b1b]
+                        focus:outline-none
+                        focus:border-orange-500
+                        focus:ring-4
+                        focus:ring-orange-500/15
+                        cursor-pointer">
+                        <option value="all">All Jobs</option>
+                    </select>
+
+                    <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+                        <svg class="h-4 w-4 text-orange-400 transition-transform duration-300" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= JOB OPENINGS PANEL ================= -->
+        <section id="panel-jobs" class="tab-panel is-active">
+            <div class="job-grid" id="jobGrid"></div>
+        </section>
+
+        <!-- ================= APPLICANTS PANEL ================= -->
+        <section id="panel-applicants" class="tab-panel">
+
+            <div class="relative bg-gradient-to-b from-white/5 to-white/3 backdrop-blur-[22px] border border-orange-500/20 rounded-xl p-[18px] pb-4 overflow-hidden reveal"
+                style="animation-delay:160ms">
+                <div class="absolute -top-20 right-0 w-48 h-48 rounded-full bg-white/5 blur-3xl pointer-events-none">
+                </div>
+
+                <div class="relative z-10 table-scroll overflow-x-auto -mx-1 px-1">
+                    <table class="w-full border-collapse text-[12.5px] min-w-[920px]">
+                        <thead>
+                            <tr>
+                                <th
+                                    class="text-left px-2.5 py-2 font-semibold text-orange-300/80 uppercase text-[10px] tracking-wider border-b border-orange-500/20 border-r border-orange-500/10 whitespace-nowrap">
+                                    Full Name</th>
+                                <th
+                                    class="text-left px-2.5 py-2 font-semibold text-orange-300/80 uppercase text-[10px] tracking-wider border-b border-orange-500/20 border-r border-orange-500/10 whitespace-nowrap">
+                                    Email</th>
+                                <th
+                                    class="text-left px-2.5 py-2 font-semibold text-orange-300/80 uppercase text-[10px] tracking-wider border-b border-orange-500/20 border-r border-orange-500/10 whitespace-nowrap">
+                                    Phone</th>
+                                <th
+                                    class="text-left px-2.5 py-2 font-semibold text-orange-300/80 uppercase text-[10px] tracking-wider border-b border-orange-500/20 border-r border-orange-500/10 whitespace-nowrap">
+                                    Applied Job</th>
+                                <th
+                                    class="text-left px-2.5 py-2 font-semibold text-orange-300/80 uppercase text-[10px] tracking-wider border-b border-orange-500/20 border-r border-orange-500/10 whitespace-nowrap">
+                                    Resume</th>
+                                <th
+                                    class="text-left px-2.5 py-2 font-semibold text-orange-300/80 uppercase text-[10px] tracking-wider border-b border-orange-500/20 border-r border-orange-500/10 whitespace-nowrap">
+                                    Date</th>
+                                <th
+                                    class="text-left px-2.5 py-2 font-semibold text-orange-300/80 uppercase text-[10px] tracking-wider border-b border-orange-500/20 border-r border-orange-500/10 whitespace-nowrap">
+                                    Status</th>
+                                <th
+                                    class="text-left px-2.5 py-2 font-semibold text-orange-300/80 uppercase text-[10px] tracking-wider border-b border-orange-500/20 whitespace-nowrap">
+                                    Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="appTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div
+                    class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 mt-1 border-t border-orange-500/10">
+                    <span id="appResultCount" class="text-[12px] text-[#948d85]"></span>
+                    <div id="appPagination" class="flex items-center gap-1.5"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= JOB CREATE / EDIT MODAL ================= -->
+    <div id="jobModal" class="modal-overlay">
+        <div
+            class="modal-panel relative mt-10 bg-[#0d0d0d] border border-orange-500/20 rounded-2xl w-[92vw] max-w-md shadow-[0_30px_80px_rgba(0,0,0,0.6)] overflow-hidden">
+
+            <!-- Header -->
+            <div class="flex items-center justify-between px-5 py-3 border-b border-orange-500/10">
+                <h3 id="jobModalTitle" class="text-[#f6f3ef] font-display font-semibold text-[15px]">
+                    Post a New Job Opening
+                </h3>
+
+                <button type="button" data-close-modal="jobModal"
+                    class="w-8 h-8 rounded-full flex items-center justify-center text-orange-400 hover:text-white hover:bg-orange-500/10 transition"
+                    aria-label="Close">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 6l12 12M18 6 6 18" stroke-linecap="round" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="p-4 modal-scroll max-h-[60vh] overflow-y-auto space-y-4">
+
+                <div class="field-group" id="jobTitleField">
+                    <label class="field-label" for="jobTitleInput">Job Title</label>
+                    <input id="jobTitleInput" type="text" class="field-input" placeholder="Frontend Developer" />
+                    <div class="field-error">This field is required.</div>
+                </div>
+
+                <div class="field-group" id="jobLocationField">
+                    <label class="field-label" for="jobLocationInput">Location</label>
+                    <input id="jobLocationInput" type="text" class="field-input" placeholder="Pune, Maharashtra" />
+                    <div class="field-error">This field is required.</div>
+                </div>
+
+                <div class="field-group" id="jobDescField">
+                    <label class="field-label" for="jobDescInput">Short Description</label>
+                    <textarea id="jobDescInput" rows="4" class="field-textarea"
+                        placeholder="Build responsive, high-performance user interfaces using modern web technologies."></textarea>
+                    <div class="field-error">This field is required.</div>
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="flex gap-3 px-4 py-3 border-t border-orange-500/10 bg-white/[0.01]">
+
+                <button type="button" data-close-modal="jobModal"
+                    class="flex-1 h-10 rounded-lg border border-white/10 text-[#c9c4bd] text-sm font-medium hover:bg-white/5 transition">
+                    Cancel
+                </button>
+
+                <button type="button" id="saveJobBtn"
+                    class="flex-1 h-10 rounded-lg bg-gradient-to-br from-[#ff8a4c] to-[#e6541c] text-[#150a04] text-sm font-semibold hover:opacity-90 transition">
+                    Save Job
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= JOB DETAILS (VIEW) MODAL ================= -->
+    <div id="jobViewModal" class="modal-overlay">
+        <div
+            class="modal-panel relative mt-10 bg-[#0d0d0d] border border-orange-500/20 rounded-2xl w-[92vw] max-w-md shadow-[0_30px_80px_rgba(0,0,0,0.6)] overflow-hidden">
+
+            <!-- Header -->
+            <div class="flex items-center justify-between px-5 py-3 border-b border-orange-500/10">
+                <h3 class="text-[#f6f3ef] font-display font-semibold text-[15px]">
+                    Job Details
+                </h3>
+
+                <button type="button" data-close-modal="jobViewModal"
+                    class="w-8 h-8 rounded-full flex items-center justify-center text-orange-400 hover:text-white hover:bg-orange-500/10 transition"
+                    aria-label="Close">
+
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 6l12 12M18 6 6 18" stroke-linecap="round" />
+                    </svg>
+
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="p-4 modal-scroll max-h-[60vh] overflow-y-auto space-y-4">
+
+                <div>
+                    <p class="text-[10px] uppercase tracking-wider text-[#948d85] mb-1">
+                        Job Title
+                    </p>
+
+                    <div id="jobViewTitle"
+                        class="rounded-lg border border-orange-500/10 bg-white/[0.03] px-3 py-2 text-[14px] font-semibold text-[#f6f3ef]">
+                    </div>
+                </div>
+
+                <div>
+                    <p class="text-[10px] uppercase tracking-wider text-[#948d85] mb-1">
+                        Location
+                    </p>
+
+                    <div id="jobViewLocation"
+                        class="rounded-lg border border-orange-500/10 bg-white/[0.03] px-3 py-2 text-[13px] text-[#c9c4bd]">
+                    </div>
+                </div>
+
+                <div>
+                    <p class="text-[10px] uppercase tracking-wider text-[#948d85] mb-1">
+                        Description
+                    </p>
+
+                    <div id="jobViewDescription"
+                        class="rounded-lg border border-orange-500/10 bg-white/[0.03] px-3 py-3 text-[13px] leading-relaxed text-[#c9c4bd] whitespace-pre-wrap break-words">
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="flex gap-3 px-4 py-3 border-t border-orange-500/10 bg-white/[0.01]">
+
+                <button type="button" data-close-modal="jobViewModal"
+                    class="flex-1 h-10 rounded-lg border border-white/10 text-[#c9c4bd] text-sm font-medium hover:bg-white/5 transition">
+                    Close
+                </button>
+
+                <button type="button" id="jobViewEditBtn"
+                    class="flex-1 h-10 rounded-lg bg-gradient-to-br from-[#ff8a4c] to-[#e6541c] text-[#150a04] text-sm font-semibold hover:opacity-90 transition">
+                    Edit Job
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+    <!-- ================= APPLICANT DETAIL MODAL ================= -->
+    <div id="appModal" class="modal-overlay">
+        <div
+            class="modal-panel relative bg-[#0d0d0d] mt-16 border border-orange-500/20 rounded-2xl w-[92vw] max-w-xl shadow-[0_30px_80px_rgba(0,0,0,0.6)] overflow-hidden">
+            <div class="flex justify-between items-center px-4 py-2 border-b border-orange-500/10">
+                <h3 class="text-[#f6f3ef] font-display font-semibold text-[15px]">Applicant details</h3>
+                <button type="button" data-close-modal="appModal"
+                    class="w-8 h-8 rounded-full flex items-center justify-center text-orange-400 hover:text-white hover:bg-orange-500/10 transition"
+                    aria-label="Close">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 6l12 12M18 6 6 18" stroke-linecap="round" />
+                    </svg>
+                </button>
+            </div>
+            <div id="appModalBody" class="p-5 modal-scroll max-h-[75vh] overflow-y-auto"></div>
+        </div>
+    </div>
+
+    <!-- ================= DELETE CONFIRM MODAL (shared: job + applicant) ================= -->
+    <div id="deleteModal" class="modal-overlay">
+        <div
+            class="modal-panel relative bg-[#0d0d0d] border border-orange-500/20 rounded-2xl w-[92vw] max-w-sm shadow-[0_30px_80px_rgba(0,0,0,0.6)] overflow-hidden">
+            <div class="p-6 text-center">
+                <div
+                    class="w-12 h-12 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M10.3 3.9 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M12 9v4M12 17h.01" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <h3 class="text-[#f6f3ef] font-display font-semibold text-[16px] mb-1.5">Are you sure?</h3>
+                <p id="deleteModalText" class="text-[13px] text-[#948d85] leading-relaxed"></p>
+                <div class="flex gap-2.5 mt-6">
+                    <button type="button" data-close-modal="deleteModal"
+                        class="flex-1 py-2.5 rounded-lg border border-white/10 text-[#c9c4bd] text-[13px] font-medium hover:bg-white/5 transition-colors">Cancel</button>
+                    <button type="button" id="confirmDeleteBtn"
+                        class="flex-1 py-2.5 rounded-lg bg-red-500/90 hover:bg-red-500 text-white text-[13px] font-semibold transition-colors">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../Navigation/navigation.js"></script>
+    <script>
+      // In the live app, the external header/navigation module mounts itself
+    if (window.Navigation) Navigation.mount('#app-nav-root', { active: 'career' });
+    
+    // ✅ Check localStorage for tab preference
+    const tab = localStorage.getItem('careerTab');
+    if (tab === 'applicants') {
+        // Set a global flag for career.js
+        window.initialTab = 'applicants';
+    };
+    </script>
+    <script src="./career.js"></script>
+</body>
+
+</html>
